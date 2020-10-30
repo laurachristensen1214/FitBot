@@ -1,52 +1,62 @@
-﻿$randomNumber = Get-Random -Maximum 12
-If ($randomNumber -eq 0) {
-  $workout = '25 pushups!'
+$randomNumber = Get-Random -Maximum 12
+
+$workout = switch ($randomNumber) {
+    0 {
+        '25 pushups!'
+    }
+    1 {
+        '25 crunches or situps!'
+    }
+    2 {
+        'Plank for 1 minute!'
+    }
+    3 {
+        '25 bicep curls!'
+    }
+    4 {
+        '50 jumping jacks!'
+    }
+    5 {
+        'Alternate between cat and cow poses for 1 minute!'
+    }
+    6 {
+        '30 dumb bell rows!'
+    }
+    7 {
+        '30 lunges!'
+    }
+    8 {
+        'Forward fold and sway like a ragdoll to loosen that back!'
+    }
+    9 {
+        '50 flutter kicks!'
+    }
+    10 {
+        'Mountain climbers for 1 minute!'
+    }
+    11 {
+        '25 reverse crunches!'
+    }
+    12 {
+        'Squat and punch for 1 minute!'
+    }
+    default {
+        '25 squats or wall sit for 1 minute!'
+    }
 }
-Elseif($randomNumber -eq 1){
-  $workout = '25 crunches or situps!'
-}
-Elseif($randomNumber -eq 2){
-  $workout = 'Plank for 1 minute!'
-}
-Elseif($randomNumber -eq 3){
-  $workout = '25 bicep curls!'
-}
-Elseif($randomNumber -eq 4){
-  $workout = '50 jumping jacks!'
-}
-Elseif($randomNumber -eq 5){
-  $workout = 'Alternate between cat and cow poses for 1 minute!'
-}
-Elseif($randomNumber -eq 6){
-  $workout = '30 dumb bell rows!'
-}
-Elseif($randomNumber -eq 7){
-  $workout = '30 lunges!'
-}
-Elseif($randomNumber -eq 8){
-  $workout = 'Forward fold and sway like a ragdoll to loosen that back!'
-}
-Elseif($randomNumber -eq 9){
-  $workout = '50 flutter kicks!'
-}
-Elseif($randomNumber -eq 10){
-  $workout = 'Mountain climbers for 1 minute!'
-}
-Elseif($randomNumber -eq 11){
-  $workout = '25 reverse crunches!'
-}
-Elseif($randomNumber -eq 12){
-  $workout = 'Squat and punch for 1 minute!'
-}
-else{
-   $workout = '25 squats or wall sit for 1 minute!'
-}
+
 $payload = @{
- "channel" = 'vu-fit'
+  "channel" = 'vu-fit'
   "text" = $workout
 }
+
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest -UseBasicParsing `
- -Body (ConvertTo-Json -Compress -InputObject $payload) `
- -Method Post `
- -Uri https://hooks.slack.com/services/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
+
+$WebRequestParameters = @{
+    'Uri'             = 'https://hooks.slack.com/services/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'
+    'Method'          = 'Post'
+    'UseBasicParsing' = $true
+    'Body'            = (ConvertTo-Json -Compress -InputObject $payload)
+}
+
+Invoke-WebRequest @WebRequestParameters
